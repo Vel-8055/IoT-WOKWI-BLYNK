@@ -1,0 +1,78 @@
+https://wokwi.com/projects/418766925578095617
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#define BLYNK_TEMPLATE_ID "TMPL3XhdmhkGG"
+#define BLYNK_TEMPLATE_NAME "FOUR LED BLINK"
+#define BLYNK_AUTH_TOKEN "a5BjNuaItZ0isqYfvV_yDYxpj_5UP73U"
+
+#define BLYNK_PRINT Serial
+
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
+
+// Your WiFi credentials.
+// Set password to "" for open networks.
+char ssid[] = "Wokwi-GUEST";
+char pass[] = "";
+ 
+WidgetLED led1(V1);
+WidgetLED led2(V2);
+WidgetLED led3(V3);
+WidgetLED led4(V4);
+
+BlynkTimer timer;
+
+// V1 LED Widget is blinking
+void blinkLedWidget()
+{
+  if (led1.getValue()) {
+    led1.off();
+    Serial.println("LED on V1: off");
+    Blynk.virtualWrite(V1, LOW);
+  } else {
+    led1.on();
+    Serial.println("LED on V1: on");
+    Blynk.virtualWrite(V1, HIGH);
+  }
+  if (led2.getValue()) {
+    led2.off();
+    Serial.println("LED on V2: off");
+    Blynk.virtualWrite(V2, LOW);
+  } else {
+    led2.on();
+    Serial.println("LED on V2: on");
+    Blynk.virtualWrite(V2, HIGH);
+  }
+{
+  if (led3.getValue()) {
+    led3.off();
+    Serial.println("LED on V3: off");
+    Blynk.virtualWrite(V3, LOW);
+  } else {
+    led3.on();
+    Serial.println("LED on V3: on");
+    Blynk.virtualWrite(V3, HIGH);
+  }
+}
+  if (led4.getValue()) {
+    led4.off();
+    Serial.println("LED on V4: off");
+    Blynk.virtualWrite(V4, LOW);
+  } else {
+    led4.on();
+    Serial.println("LED on V4: on");
+    Blynk.virtualWrite(V4, HIGH);
+  }
+}
+void setup()
+{
+  Serial.begin(115200);
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+  timer.setInterval(1000L, blinkLedWidget);
+}
+
+void loop()
+{
+  Blynk.run();
+  timer.run();
+}
