@@ -1,0 +1,43 @@
+https://wokwi.com/projects/425741677171791873
+----------------------------------------------------------------------------------------------------------
+CODE:
+
+#define BLYNK_TEMPLATE_ID "TMPL3d736m1yF"
+#define BLYNK_TEMPLATE_NAME "DISTANCE"
+#define BLYNK_AUTH_TOKEN "JwtVvdkbUJakvlmuwOUOLkvbdPEnRGWn"
+
+#include <WiFi.h>
+#include <BlynkSimpleEsp32.h>
+
+#define TRIG_PIN 23
+#define ECHO_PIN 22
+long duration;
+int distance;
+char auth[] = BLYNK_AUTH_TOKEN;
+char ssid[] = "Wokwi-GUEST";
+char pass[] = "";
+void setup()
+{
+  Serial.begin(115200);
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  Blynk.begin(auth, ssid, pass);
+  
+  delay(1000);
+}
+
+void loop() {
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+  duration = pulseIn(ECHO_PIN, HIGH);
+  distance = duration * 0.0344 / 2;
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  Blynk.virtualWrite(V0, distance);
+  Blynk.run();
+  delay(1000);
+}
